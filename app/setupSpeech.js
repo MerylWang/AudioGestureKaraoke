@@ -6,6 +6,7 @@ var debouncedProcessSpeech = _.debounce(processSpeech, 500);
 var recognition = new webkitSpeechRecognition();
 recognition.continuous = true;
 recognition.interimResults = true;
+
 recognition.onresult = function(event) {
   // Build the interim transcript, so we can process speech faster
   var transcript = '';
@@ -22,6 +23,7 @@ recognition.onresult = function(event) {
       otherFeedback.setContent("SPEECH DEBUG: ready");
     else
       otherFeedback.setContent("SPEECH DEBUG: " + transcript);
+      console.log("transcript: " + transcript);
   }
 
   var processed = debouncedProcessSpeech(transcript);
@@ -43,4 +45,3 @@ recognition.start();
 /*****************************************************************/
 /******** END OF SPEECH RECOG SETUP ******************************/
 /*****************************************************************/
-
