@@ -47,7 +47,12 @@ function stopVideo() {
 //////////////////////////
 // GESTURE RECOGNITION //
 ////////////////////////
+
 var controllerOptions = {enableGestures: true};
+
+Number.prototype.clamp = function(min, max) {
+  return Math.min(Math.max(this,min), max);
+};
 
 Leap.loop(controllerOptions, function(frame) {
 
@@ -70,14 +75,19 @@ Leap.loop(controllerOptions, function(frame) {
           } else { //vertical
               if(gesture.direction[1] > 0){
                   swipeDirection = "up";
+                  var vol = player.getVolume() + 10; // TODO: make into variables
+                  player.setVolume(vol.clamp(0,100));
               } else {
                   swipeDirection = "down";
+                  var vol = player.getVolume() - 10; // TODO: make into variables
+                  player.setVolume(vol.clamp(0,100));
               }
           }
           // TODO: do someething with swipeDirection
           console.log(swipeDirection);
        } else if (gesture.type == "screenTap") {
          // play / pause
+         console.log("screen tap");
          if (player.getPlayerState() == 1) { // if playing
            player.pauseVideo();
          } else if (player.getPlayerState() == 2) { // if paused
@@ -85,9 +95,49 @@ Leap.loop(controllerOptions, function(frame) {
          }
 
        } else if (gesture.type == "circle") {
+         console.log("circle");
          // replay
-         player.seekTo(0, true);
+         player.seekTo(Number('00'), true);
        }
      }
   }
+
+
 });
+
+
+//////////////////////////
+// AUDIO RECOGNITION //
+////////////////////////
+
+// Helper function to detect if any commands appear in a string
+var userSaid = function(str, commands) {
+  for (var i = 0; i < commands.length; i++) {
+    if (str.indexOf(commands[i]) > -1)
+      return true;
+  }
+  return false;
+};
+
+console.log("transcript: " + transcript);
+
+var processSpeech = function(transcript) {
+
+if (userSaid(transcript, ['play, resume'])) {
+  player.playVideo();
+
+} else if (userSaid(transcript, ['pause'])) {
+  player.pauseVideo();
+
+} else if (userSaid(transcript, ['replay'])) {
+  player.seekTo(Number('00'), true);
+
+} else if (userSaid(transcript, ['up, loud, louder'])) {
+  var vol = player.getVolume() + 10; // TODO: make into variables
+  player.setVolume(vol.clamp(0,100));
+
+} else if (userSaid(transcript, ['down, quiet, quieter, soft, softer'])) {
+  var vol = player.getVolume() - 10; // TODO: make into variables
+  player.setVolume(vol.clamp(0,100));
+}
+};
