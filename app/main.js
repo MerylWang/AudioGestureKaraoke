@@ -1,4 +1,9 @@
 //////////////////////////
+// UI SETUP            //
+///////////////////////
+setupUserInterface();
+
+//////////////////////////
 // UI: Youtube Widget //
 ///////////////////////
 
@@ -122,22 +127,21 @@ var userSaid = function(str, commands) {
 console.log("transcript: " + transcript);
 
 var processSpeech = function(transcript) {
+  if (userSaid(transcript, ['play, resume'])) {
+    player.playVideo();
 
-if (userSaid(transcript, ['play, resume'])) {
-  player.playVideo();
+  } else if (userSaid(transcript, ['pause'])) {
+    player.pauseVideo();
 
-} else if (userSaid(transcript, ['pause'])) {
-  player.pauseVideo();
+  } else if (userSaid(transcript, ['replay'])) {
+    player.seekTo(Number('00'), true);
 
-} else if (userSaid(transcript, ['replay'])) {
-  player.seekTo(Number('00'), true);
+  } else if (userSaid(transcript, ['up, loud, louder'])) {
+    var vol = player.getVolume() + 10; // TODO: make into variables
+    player.setVolume(vol.clamp(0,100));
 
-} else if (userSaid(transcript, ['up, loud, louder'])) {
-  var vol = player.getVolume() + 10; // TODO: make into variables
-  player.setVolume(vol.clamp(0,100));
-
-} else if (userSaid(transcript, ['down, quiet, quieter, soft, softer'])) {
-  var vol = player.getVolume() - 10; // TODO: make into variables
-  player.setVolume(vol.clamp(0,100));
-}
+  } else if (userSaid(transcript, ['down, quiet, quieter, soft, softer'])) {
+    var vol = player.getVolume() - 10; // TODO: make into variables
+    player.setVolume(vol.clamp(0,100));
+  }
 };
