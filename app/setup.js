@@ -5,6 +5,7 @@ var StateModifier = famous.modifiers.StateModifier;
 
 
 var otherFeedback;
+
 // USER INTERFACE SETUP
 var setupUserInterface = function() {
   var mainContext = Engine.createContext();
