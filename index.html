@@ -117,6 +117,7 @@
 	          console.log(swipeDirection);
 	       } else if (gesture.type == "screenTap") {
 	         // play / pause
+					 console.log("screen tap");
 	         if (player.getPlayerState() == 1) { // if playing
 	           player.pauseVideo();
 	         } else if (player.getPlayerState() == 2) { // if paused
@@ -124,6 +125,7 @@
 	         }
 
 	       } else if (gesture.type == "circle") {
+					 console.log("circle");
 	         // replay
 	         player.seekTo(Number('00'), true);
 	       }
