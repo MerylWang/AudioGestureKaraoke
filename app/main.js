@@ -53,6 +53,11 @@ function stopVideo() {
 // GESTURE RECOGNITION //
 ////////////////////////
 
+var SWIPE_DURATION  = 0000; // ms
+var SWIPE_SPEED     = 0;
+var CIRCLE_DURATION = 1000000; // ms
+var RADIUS           = 50;      // mm
+
 var controllerOptions = {enableGestures: true};
 
 Number.prototype.clamp = function(min, max) {
@@ -62,12 +67,11 @@ Number.prototype.clamp = function(min, max) {
 Leap.loop(controllerOptions, function(frame) {
   // Display Gesture object data
   if (frame.gestures.length > 0) {
-    console.log("gesture");
     for (var i = 0; i < frame.gestures.length; i++) {
       var gesture = frame.gestures[i];
-
       // swipe
-      if (gesture.type == "swipe") {
+      if (gesture.type == "swipe" && gesture.duration > SWIPE_DURATION && gesture.speed > SWIPE_SPEED) {
+
           //Classify swipe as either horizontal or vertical
           var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
           //Classify as right-left or up-down
@@ -88,8 +92,10 @@ Leap.loop(controllerOptions, function(frame) {
                   player.setVolume(vol.clamp(0,100));
               }
           }
-          // TODO: do someething with swipeDirection
           console.log(swipeDirection);
+          // console.log(gesture.duration);
+          console.log("swipe speed " + gesture.speed);
+
        } else if (gesture.type == "keyTap" || gesture.type == "screenTap") {
          // play / pause
          console.log("tap: " + gesture.type);
@@ -99,7 +105,7 @@ Leap.loop(controllerOptions, function(frame) {
            player.playVideo();
          }
 
-       } else if (gesture.type == "circle") {
+       } else if (gesture.type == "circle" && gesture.radius > RADIUS && gesture.duration > CIRCLE_DURATION) {
          console.log("circle");
          // replay
          player.seekTo(Number('00'), true);
