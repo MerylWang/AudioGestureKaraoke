@@ -15,7 +15,8 @@ var setupUserInterface = function() {
     size: [undefined, 50],
     properties: {
       // backgroundColor: "rgb(34, 34, 34)",
-      backgroundColor: "white",
+      // backgroundColor: "white",
+      background: "linear-gradient(to right, #ff6e7f, #bfe9ff)",
       color: "black"
     }
   });
