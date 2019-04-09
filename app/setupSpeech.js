@@ -23,6 +23,7 @@ recognition.onresult = function(event) {
       otherFeedback.setContent("SPEECH DEBUG: ready");
     else
       otherFeedback.setContent("SPEECH DEBUG: " + transcript);
+      processSpeech(transcript);
   }
 
   var processed = debouncedProcessSpeech(transcript);

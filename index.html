@@ -4,9 +4,36 @@
 <head>
 	<title>mUwUsic Karaoke</title>
 	<style>
+		h1 {
+			margin-left: 20px;
+		}
+		html {
+			font-family: 'Abel';
+			font-size: 22px;
+		}
+		p1 {
+			margin-left: 20px;
+		}
 		body {
 			/* color: #f3fde1; */
 			/* background-color: #406873; */
+			margin: 10px 0;
+		}
+		li {
+			margin: 10px 0;
+			font-size: 14px;
+		}
+		.column {
+			float: left;
+			width: 30%;
+		}
+		.row:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+		#player {
+			margin-left: 20px;
 		}
 	</style>
 
@@ -40,7 +67,36 @@
 	<!-- <p><button id="pause">play/pause</button></p> -->
 
 	<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-	<div id="player"></div>
+	<p1> Welcome to mUwUsic: The Audio-Gesture Karaoke Machine  !!!</p1>
+
+	<div class='row'>
+	<div class='column' id="instruct">
+
+		<ul>
+			<li> Instructions - Voice: </li>
+			<ul>
+				<li> 'play','resume' - Plays the Video</li>
+				<li> 'pause','stop' - Pauses the Video</li>
+				<li> 'replay' - Restarts the Video</li>
+				<li> 'louder' - Increases the volume</li>
+				<li> 'softer' - Decreases the volume</li>
+			</ul>
+		</ul>
+	</div>
+	<div class='column'>
+		<ul>
+			<li>Instructions - Gesture:</li>
+			<ul>
+				<li> Tap - Plays/Pauses the Video </li>
+				<li> Swipe Up - Increases the Volume </li>
+				<li> Swipe Down - Decreases the Volume </li>
+				<li> Circle - Restarts the Video </li>
+			</ul>
+	</ui>
+	</div>
+</div>
+
+ 	<div id="player"></div>
 
 	<!-- <p>Use this form to queue new videos:</p> -->
 	<!-- <input type="text" id="youtube_id" placeholder="youtube search or ID"> <button id="submit">Queue</button> <button id="suggest">Search</button> <button id="random">Random</button> -->
