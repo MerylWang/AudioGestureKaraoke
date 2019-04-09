@@ -60,12 +60,9 @@ Number.prototype.clamp = function(min, max) {
 };
 
 Leap.loop(controllerOptions, function(frame) {
-  // console.log("Leap");
-  console.log(frame);
-
-
   // Display Gesture object data
   if (frame.gestures.length > 0) {
+    console.log("gesture");
     for (var i = 0; i < frame.gestures.length; i++) {
       var gesture = frame.gestures[i];
 
