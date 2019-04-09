@@ -124,7 +124,6 @@ var userSaid = function(str, commands) {
   return false;
 };
 
-console.log("transcript: " + transcript);
 
 var processSpeech = function(transcript) {
   if (userSaid(transcript, ['play, resume'])) {

@@ -14,8 +14,9 @@ var setupUserInterface = function() {
     content: "",
     size: [undefined, 50],
     properties: {
-      backgroundColor: "rgb(34, 34, 34)",
-      color: "white"
+      // backgroundColor: "rgb(34, 34, 34)",
+      backgroundColor: "white",
+      color: "black"
     }
   });
   var otherModifier = new StateModifier({
