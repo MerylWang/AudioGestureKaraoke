@@ -140,7 +140,7 @@ var processSpeech = function(transcript) {
   } else if (userSaid(transcript, ['stop', 'pause'])) {
     player.pauseVideo();
 
-  } else if (userSaid(transcript, ['replay'])) {
+  } else if (userSaid(transcript, ['restart'])) {
     player.seekTo(Number('00'), true);
 
   } else if (userSaid(transcript, ['up', 'loud', 'louder'])) {
