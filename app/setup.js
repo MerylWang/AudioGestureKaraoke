@@ -21,7 +21,7 @@ var setupUserInterface = function() {
     }
   });
   var otherModifier = new StateModifier({
-    origin: [0.0, 1.0],
+    origin: [0.0, 0.5],
     align: [0.0, 1.0]
   });
   mainContext.add(otherModifier).add(otherFeedback);
