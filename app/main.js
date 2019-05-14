@@ -6,148 +6,138 @@ setupUserInterface();
 //////////////////////////
 // UI: Youtube Widget //
 ///////////////////////
-
-// setInterval(updateQueue, 1000);
-
-// queue //
-var SONGS = ['ajtFz7RYdj4','Mm2kTNzo2aY', 'B6GC83lTT5E', 'SFjiWJt2yU0', 'q2UVTPlKZtQ', 'szROVj0Swcs'];
-var TITLES = {'ajtFz7RYdj4': "7 Rings",
-              'Mm2kTNzo2aY':"Alexander Hamilton",
-              'B6GC83lTT5E': "Reflection",
-              'SFjiWJt2yU0': "What I've Done",
-              'q2UVTPlKZtQ': "Hello",
-              'szROVj0Swcs': "All of Me"};
-
-
-
-function updateQueue(songs) {
-  console.log("update queue");
-  var queue = document.getElementById("queue");
-  var total = "";
-
-  for (var i = 0; i < songs.length; i++) {
-  	total += "<li><span></span> </li>";
-  }
-
-  queue.innerHTML = total;
-
-  for (var i = 0; i < songs.length; i++) {
-  	var span = queue.children[i].children[0];
-    var title = TITLES[songs[i]];
-    console.log("title: ", title);
-    span.innerText = title;
-  }
-}
-
-
-
 // 2. This code loads the IFrame Player API code asynchronously.
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
 // 3. This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
 var player;
-
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
     height: '520',
     width: '850',
-    videoId: 'ajtFz7RYdj4', // TODO: CHANGE THIS
+    videoId: SONG_IDS[0], // TODO: CHANGE THIS
     events: {
       'onReady': onPlayerReady,
       'onStateChange': onPlayerStateChange
     }
   });
 }
-
-
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
   event.target.playVideo();
 }
-
-// queue
-function loadList() {
-  console.log("loading list");
-    player.loadPlaylist(SONGS);
-    updateQueue(SONGS);
-}
-
 // 5. The API calls this function when the player's state changes.
 //    The function indicates that when playing a video (state=1),
 //    the player should play for six seconds and then stop.
-
 var done = false;
 function onPlayerStateChange(event) {
   player.getVideoUrl()
-  if (!(player.getVideoUrl().includes(SONGS[0]))) { // if first video in queue is not playing
-    SONGS.shift(); // pops first element
-    updateQueue(SONGS);
-    // setTimeout(stopVideo, 6000);
-    // done = true;
+  if (!(player.getVideoUrl().includes(SONG_IDS[0]))) { // if first video in queue is not playing
+    SONG_IDS.shift(); // pops first element
+    updateQueue(SONG_IDS);
+    player.loadPlaylist(SONG_IDS);
   }
 }
 
-// function stopVideo() {
-//   player.stopVideo();
-// };
+///////////////////////////
+// QUEUE IMPLEMENTATION //
+/////////////////////////
 
-
-// setTimeout(loadList, 10000);
-window.onload = loadList;
-window.onload = searchByKeyword;
-
-
-// search function //
-
-/**
- * This function searches for videos related to the keyword 'dogs'. The video IDs and titles
- * of the search results are logged to Apps Script's log.
- *
- * Note that this sample limits the results to 25. To return more results, pass
- * additional parameters as documented here:
- *   https://developers.google.com/youtube/v3/docs/search/list
- */
+var SONG_IDS = ['Mm2kTNzo2aY', 'q2UVTPlKZtQ'];
+// var TITLES = {'ajtFz7RYdj4': "7 Rings",
+//               'Mm2kTNzo2aY':"Alexander Hamilton",
+//               'B6GC83lTT5E': "Reflection",
+//               'SFjiWJt2yU0': "What I've Done",
+//               'q2UVTPlKZtQ': "Hello",
+//               'szROVj0Swcs': "All of Me"};
 
 // var apikey = 'AIzaSyANEFrZGE9JoiLVHoNGg1dy6j47YAV6ztA';
-var ytDataApiKey = 'AIzaSyCrO6uDzxgGOhTPFFz_9Lrq8JXp2NK86cE';
+var YT_API_KEY = 'AIzaSyCrO6uDzxgGOhTPFFz_9Lrq8JXp2NK86cE';
 
-// TODO: parameter: list of keywords
-function searchByKeyword() {
+function searchSong() {
+   // input: user search query for song title (string)
+   // output: add first result to QUEUE
 
-  console.log("title: ", idToTitle('ajtFz7RYdj4'));
+   // get query
+   var query = document.getElementById("query-input").value;
+   searchSongHelper(query);
+}
 
-  // TODO: adjust keyword
-  var results = new YouTube.Search.list('id,snippet', {q: 'dogs', maxResults: 10});
+function searchSongHelper(song_name) {
+   // song_name: user search query for song title (string)
+   // output: add first result to QUEUE
 
-  for(var i in results.items) {
-    var item = results.items[i];
-    // Logger.log('[%s] Title: %s', item.id.videoId, item.snippet.title);
-    console.log('[%s] Title: %s', item.id.videoId, item.snippet.title);
-    // TODO: display results on webpage, let user choose, get id of chosen video
-    // TITLE.push_back(idToTitle(video_id)
-    // SONGS.push_back(video_id)
+   // get query
+   var videoId = getvideoId(song_name);
+
+   // add videoId to SONG_IDS
+   SONG_IDS.push(videoId);
+
+   // updateQueue
+   updateQueue(SONG_IDS);
+
+   // avoid player getting stucks
+   if (SONG_IDS.length == 2){
+    player.loadPlaylist(SONG_IDS);
+   }
+}
+
+function loadList() {
+    // loads playlist
+    player.loadPlaylist(SONG_IDS);
+    updateQueue(SONG_IDS);
+}
+
+
+
+// load queue after window finishes loading
+window.onload = loadList;
+
+function updateQueue(song_ids) {
+  // updates HTML queue based on list of videoIds
+  var queue = document.getElementById("queue");
+  var total = "";
+
+  for (var i = 0; i < song_ids.length; i++) {
+  	total += "<li><span></span> </li>";
+  }
+
+  queue.innerHTML = total;
+
+  for (var i = 0; i < song_ids.length; i++) {
+  	var span = queue.children[i].children[0];
+    var title = idToTitle(song_ids[i]);
+    span.innerText = title;
   }
 }
 
-// parse title from video_id
-function idToTitle(videoId) {
-  var title;
-  $.get("https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + videoId + "&key=" + ytDataApiKey, function(data) {
-    // TODO: add title to titles
-    console.log(data.items[0].snippet.title);
-    title = data.items[0].snippet.title;
+function getvideoId(query) {
+  // given search query (string), return videoId of top result
 
+  var word = query.trim().replace(" " , "+");
+  word += "+karaoke";
+  var url = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=relevance&q="+word+"+&type=video+&videoDefinition=high&videoEmbeddable=true&key="+YT_API_KEY;
+
+  var result = $.ajax({
+  url: url,
+  async  : false
   });
-  var x=0;
-  for (var i=0; i<9000000000; i++) {
-    x+=1;
-  }
-  console.log(x);
-  return title;
+
+  // get videoID
+  console.log("videoId: ", result.responseJSON.items[0].id.videoId);
+  return result.responseJSON.items[0].id.videoId;
+}
+
+function idToTitle(videoId) {
+  var title = $.ajax({
+  url: "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + videoId + "&key=" + YT_API_KEY,
+  async  : false
+  });
+
+  return title.responseJSON.items[0].snippet.title;
 }
 
 
@@ -214,23 +204,27 @@ Leap.loop(controllerOptions, function(frame) {
               if(gesture.direction[0] > 0){
                   swipeDirection = "right";
                   loops=0;
-                  // TODO: next song in queue iff exists
+                  // next song in queue iff exists
+                  generateSpeech("next video");
                   player.nextVideo();
               } else {
                   swipeDirection = "left";
-                  loops=0;
-                  // TODO previous song in queue iff exists
-                  player.previousVideo();
+                  // loops=0;
+                  //  previous song in queue iff exists
+                  // generateSpeech("previous video");
+                  // player.previousVideo();
               }
           } else { //vertical
               if(gesture.direction[1] > 0){
                   swipeDirection = "up";
                   loops=0;
+                  generateSpeech("volume up");
                   var vol = player.getVolume() + 10; // TODO: make into variables
                   player.setVolume(vol.clamp(0,100));
               } else {
                   swipeDirection = "down";
                   loops=0;
+                  generateSpeech("volume down");
                   var vol = player.getVolume() - 10; // TODO: make into variables
                   player.setVolume(vol.clamp(0,100));
               }
@@ -244,8 +238,10 @@ Leap.loop(controllerOptions, function(frame) {
          loops=0;
          console.log("tap: " + gesture.type);
          if (player.getPlayerState() == 1) { // if playing
+           generateSpeech("pause");
            player.pauseVideo();
          } else if (player.getPlayerState() == 2) { // if paused
+           generateSpeech("play");
            player.playVideo();
          }
 
@@ -254,12 +250,11 @@ Leap.loop(controllerOptions, function(frame) {
          console.log("circle");
          loops=0;
          // replay
+         generateSpeech("restart");
          player.seekTo(Number('00'), true);
        }
      }
   }
-
-
 });
 
 
@@ -279,27 +274,41 @@ var userSaid = function(str, commands) {
 
 var processSpeech = function(transcript) {
   transcript = transcript.toLowerCase();
-  // console.log("transcript: " + transcript);
+
   if (userSaid(transcript, ['karaoke'])) { // audio command keyword
-    if (userSaid(transcript, ['play', 'resume'])) {
+
+     if (userSaid(transcript, ['add'])) {
+      var song_name = transcript.substring(transcript.indexOf("add")+3, transcript.length);
+      console.log("add song", song_name);
+      generateSpeech("add " + song_name);
+      searchSongHelper(song_name);
+
+    } else if (userSaid(transcript, ['play', 'resume'])) {
+      generateSpeech("play");
       player.playVideo();
 
     } else if (userSaid(transcript, ['stop', 'pause'])) {
+      generateSpeech("pause");
       player.pauseVideo();
 
     } else if (userSaid(transcript, ['restart']) && player.getCurrentTime()>=5) {
-      console.log("current time ", player.getCurrentTime());
+      // console.log("current time ", player.getCurrentTime());
+      generateSpeech("restart");
       player.seekTo(Number('00'), true);
 
     } else if (userSaid(transcript, ['up', 'loud', 'louder'])) {
-      var vol = player.getVolume() + 10; // TODO: make into variables
+      generateSpeech("volume up");
+      var vol = player.getVolume() + 10;
       player.setVolume(vol.clamp(0,100));
 
     } else if (userSaid(transcript, ['down', 'quiet', 'quieter', 'soft', 'softer'])) {
-      var vol = player.getVolume() - 10; // TODO: make into variables
+      generateSpeech("volume down");
+      var vol = player.getVolume() - 10;
       player.setVolume(vol.clamp(0,100));
     }
+    else if (userSaid(transcript, ['next', 'skip', 'cut'])) {
+      generateSpeech("next video");
+      player.nextVideo();
+    }
   }
-
-
 };

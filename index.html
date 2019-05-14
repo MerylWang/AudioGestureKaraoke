@@ -92,11 +92,12 @@
 		<ul>
 			<li> Instructions - Voice: </li>
 			<ul>
-				<li> 'play','resume' - Plays the Video</li>
-				<li> 'pause','stop' - Pauses the Video</li>
-				<li> 'restart' - Restarts the Video</li>
-				<li> 'louder' - Increases the volume</li>
-				<li> 'softer' - Decreases the volume</li>
+				<li> 'play','resume'   - Plays the Video</li>
+				<li> 'pause','stop'    - Pauses the Video</li>
+				<li> 'restart'         - Restarts the Video</li>
+				<li> 'louder'          - Increases the volume</li>
+				<li> 'softer'          - Decreases the volume</li>
+				<li> 'add [song name]' - adds song to queue </li>
 			</ul>
 		</ul>
 	</div>
@@ -104,12 +105,12 @@
 		<ul>
 			<li>Instructions - Gesture:</li>
 			<ul>
-				<li> Tap - Plays/Pauses the Video </li>
-				<li> Swipe Up - Increases the Volume </li>
-				<li> Swipe Down - Decreases the Volume </li>
+				<li> Tap         - Plays/Pauses the Video </li>
+				<li> Swipe Up    - Increases the Volume </li>
+				<li> Swipe Down  - Decreases the Volume </li>
 				<li> Swipe Right - Next Song </li>
-				<li> Swipe Left - Previous Song </li>
-				<li> Circle - Restarts the Video </li>
+				<!-- <li> Swipe Left - Previous Song </li> -->
+				<li> Circle      - Restarts the Video </li>
 			</ul>
 	</ui>
 	</div>
@@ -120,7 +121,17 @@
 		<div id="player"></div>
 	</div>
 	<div class='column' id="queue-column">
-		<!-- <input id="playlist-button" type="button" onClick="loadList()" value="load playlist"/> -->
+
+		<div class="input-group" style="margin-bottom: 30px;">
+		        <input id="query-input" type="text" class="form-control" placeholder="Enter Song Title" />
+		        <div class="input-group-btn">
+		          <button class="btn btn-primary" type="submit" onClick="javascript:searchSong();">
+		            Search
+		          </button>
+		        </div>
+		      </div>
+
+
 
 		<p>Queued items:</p>
 		<ul id="queue">
