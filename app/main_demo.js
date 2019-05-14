@@ -1,3 +1,5 @@
+// with hard-coded queue
+
 //////////////////////////
 // UI SETUP            //
 ///////////////////////
@@ -98,7 +100,7 @@ function onPlayerStateChange(event) {
 
 // setTimeout(loadList, 10000);
 window.onload = loadList;
-window.onload = searchByKeyword;
+// window.onload = searchByKeyword;
 
 
 // search function //
@@ -113,42 +115,30 @@ window.onload = searchByKeyword;
  */
 
 // var apikey = 'AIzaSyANEFrZGE9JoiLVHoNGg1dy6j47YAV6ztA';
-var ytDataApiKey = 'AIzaSyCrO6uDzxgGOhTPFFz_9Lrq8JXp2NK86cE';
+// var ytDataApiKey = 'AIzaSyCrO6uDzxgGOhTPFFz_9Lrq8JXp2NK86cE'
 
-// TODO: parameter: list of keywords
-function searchByKeyword() {
+// // TODO: parameter: list of keywords
+// function searchByKeyword() {
+//   // TODO: adjust keyword
+//   var results = new YouTube.Search.list('id,snippet', {q: 'dogs', maxResults: 10});
+//
+//   for(var i in results.items) {
+//     var item = results.items[i];
+//     // Logger.log('[%s] Title: %s', item.id.videoId, item.snippet.title);
+//     console.log('[%s] Title: %s', item.id.videoId, item.snippet.title);
+//     // TODO: display results on webpage, let user choose, get id of chosen video
+//     // TITLE.push_back(idToTitle(video_id)
+//     // SONGS.push_back(video_id)
+//   }
+// }
 
-  console.log("title: ", idToTitle('ajtFz7RYdj4'));
-
-  // TODO: adjust keyword
-  var results = new YouTube.Search.list('id,snippet', {q: 'dogs', maxResults: 10});
-
-  for(var i in results.items) {
-    var item = results.items[i];
-    // Logger.log('[%s] Title: %s', item.id.videoId, item.snippet.title);
-    console.log('[%s] Title: %s', item.id.videoId, item.snippet.title);
-    // TODO: display results on webpage, let user choose, get id of chosen video
-    // TITLE.push_back(idToTitle(video_id)
-    // SONGS.push_back(video_id)
-  }
-}
-
-// parse title from video_id
-function idToTitle(videoId) {
-  var title;
-  $.get("https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + videoId + "&key=" + ytDataApiKey, function(data) {
-    // TODO: add title to titles
-    console.log(data.items[0].snippet.title);
-    title = data.items[0].snippet.title;
-
-  });
-  var x=0;
-  for (var i=0; i<9000000000; i++) {
-    x+=1;
-  }
-  console.log(x);
-  return title;
-}
+// // parse title from video_id
+// function idToTitle(video_id) {
+//   $.get("https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + videoId + "&key=" + ytDataApiKey, function(data) {
+//     // TODO: add title to titles
+//     return data.items[0].snippet.title;
+//   });
+// }
 
 
 //////////////////////////
