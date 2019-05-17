@@ -28,6 +28,6 @@ The following files are referenced from 6.835 battleship miniproject:
 - .app/setup.js: sets up speech debugger / displayer
 - .app/setupSpeech.js: sets up user speech processor
 
-- .lib/*: imported libaries for speech recognition, jQuery, and Leap SDK
+- .lib/*: imported libaries for speech recognition, jQuery, and Leap SDK. Files are named accordingly
 
 
