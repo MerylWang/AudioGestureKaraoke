@@ -245,9 +245,10 @@ var processSpeech = function(transcript) {
 
   if (userSaid(transcript, ['karaoke'])) { // audio command keyword
 
+    // prioritized in case song name contains other command keywords
      if (userSaid(transcript, ['add'])) {
       var song_name = transcript.substring(transcript.indexOf("add")+3, transcript.length);
-      console.log("add song", song_name);
+      // console.log("add song", song_name);
       generateSpeech("add " + song_name);
       searchSongHelper(song_name);
 
