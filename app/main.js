@@ -6,6 +6,8 @@ setupUserInterface();
 //////////////////////////
 // UI: Youtube Widget //
 ///////////////////////
+// source : https://developers.google.com/youtube/iframe_api_reference#Getting_Started
+
 // 2. This code loads the IFrame Player API code asynchronously.
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
@@ -46,22 +48,12 @@ function onPlayerStateChange(event) {
 // QUEUE IMPLEMENTATION //
 /////////////////////////
 
-var SONG_IDS = ['Mm2kTNzo2aY', 'q2UVTPlKZtQ'];
-// var TITLES = {'ajtFz7RYdj4': "7 Rings",
-//               'Mm2kTNzo2aY':"Alexander Hamilton",
-//               'B6GC83lTT5E': "Reflection",
-//               'SFjiWJt2yU0': "What I've Done",
-//               'q2UVTPlKZtQ': "Hello",
-//               'szROVj0Swcs': "All of Me"};
-
-// var apikey = 'AIzaSyANEFrZGE9JoiLVHoNGg1dy6j47YAV6ztA';
+var SONG_IDS = ['Mm2kTNzo2aY', 'q2UVTPlKZtQ']; // initial queue
 var YT_API_KEY = 'AIzaSyCrO6uDzxgGOhTPFFz_9Lrq8JXp2NK86cE';
 
 function searchSong() {
    // input: user search query for song title (string)
    // output: add first result to QUEUE
-
-   // get query
    var query = document.getElementById("query-input").value;
    searchSongHelper(query);
 }
@@ -69,14 +61,8 @@ function searchSong() {
 function searchSongHelper(song_name) {
    // song_name: user search query for song title (string)
    // output: add first result to QUEUE
-
-   // get query
    var videoId = getvideoId(song_name);
-
-   // add videoId to SONG_IDS
    SONG_IDS.push(videoId);
-
-   // updateQueue
    updateQueue(SONG_IDS);
 
    // avoid player getting stucks
@@ -90,8 +76,6 @@ function loadList() {
     player.loadPlaylist(SONG_IDS);
     updateQueue(SONG_IDS);
 }
-
-
 
 // load queue after window finishes loading
 window.onload = loadList;
@@ -116,7 +100,6 @@ function updateQueue(song_ids) {
 
 function getvideoId(query) {
   // given search query (string), return videoId of top result
-
   var word = query.trim().replace(" " , "+");
   word += "+karaoke";
   var url = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=relevance&q="+word+"+&type=video+&videoDefinition=high&videoEmbeddable=true&key="+YT_API_KEY;
@@ -126,12 +109,11 @@ function getvideoId(query) {
   async  : false
   });
 
-  // get videoID
-  console.log("videoId: ", result.responseJSON.items[0].id.videoId);
   return result.responseJSON.items[0].id.videoId;
 }
 
 function idToTitle(videoId) {
+  // given videoId (string), gets video title (string)
   var title = $.ajax({
   url: "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + videoId + "&key=" + YT_API_KEY,
   async  : false
@@ -140,17 +122,16 @@ function idToTitle(videoId) {
   return title.responseJSON.items[0].snippet.title;
 }
 
-
 //////////////////////////
 // GESTURE RECOGNITION //
 ////////////////////////
+// gesture recognition package: https://developer-archive.leapmotion.com/documentation/v2/javascript/devguide/Leap_Gestures.html?proglang=javascript
 
 var SWIPE_DURATION  = 0000; // ms
 var SWIPE_SPEED     = 0;
 var CIRCLE_DURATION = 1000000; // ms
 var RADIUS           = 50;      // mm
 var loops = 0;
-
 
 var controllerOptions = {enableGestures: true};
 
@@ -161,9 +142,8 @@ Number.prototype.clamp = function(min, max) {
 Leap.loop(controllerOptions, function(frame) {
   loops+=1;
   // Display Gesture object data
-  if (loops>100) {
-    console.log("activia");
-  }
+  // if loops <= 100, gesture recognition is not active.
+  // this is to prevent sensor from catching many gestures at once
   if (frame.gestures.length > 0 && loops>100) {
     console.log("active");
 
@@ -188,13 +168,9 @@ Leap.loop(controllerOptions, function(frame) {
       }
     }
 
-    console.log("uniq: ", uniq);
-
     for (var i = 0; i < uniq.length; i++) {
       var gesture = uniq[i];
 
-      // swipe
-      // if (gesture.type == "swipe" && gesture.duration > SWIPE_DURATION && gesture.speed > SWIPE_SPEED) {
       if (gesture.type == "swipe") {
 
           //Classify swipe as either horizontal or vertical
@@ -209,12 +185,8 @@ Leap.loop(controllerOptions, function(frame) {
                   player.nextVideo();
               } else {
                   swipeDirection = "left";
-                  // loops=0;
-                  //  previous song in queue iff exists
-                  // generateSpeech("previous video");
-                  // player.previousVideo();
               }
-          } else { //vertical
+          } else { //vertical swipe
               if(gesture.direction[1] > 0){
                   swipeDirection = "up";
                   loops=0;
@@ -229,14 +201,10 @@ Leap.loop(controllerOptions, function(frame) {
                   player.setVolume(vol.clamp(0,100));
               }
           }
-          console.log(swipeDirection);
-          // console.log(gesture.duration);
-          // console.log("swipe speed " + gesture.speed);
 
        } else if (gesture.type == "keyTap" || gesture.type == "screenTap") {
-         // play / pause
+         // play / pause video
          loops=0;
-         console.log("tap: " + gesture.type);
          if (player.getPlayerState() == 1) { // if playing
            generateSpeech("pause");
            player.pauseVideo();
@@ -245,11 +213,9 @@ Leap.loop(controllerOptions, function(frame) {
            player.playVideo();
          }
 
-       // } else if (gesture.type == "circle" && gesture.radius > RADIUS && gesture.duration > CIRCLE_DURATION) {
        } else if (gesture.type == "circle") {
-         console.log("circle");
+         // restart video
          loops=0;
-         // replay
          generateSpeech("restart");
          player.seekTo(Number('00'), true);
        }

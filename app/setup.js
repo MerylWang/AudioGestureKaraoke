@@ -1,3 +1,5 @@
+// code referenced from 6.835 mini-project 3: battleship
+
 // Import Famo.us dependencies
 var Engine = famous.core.Engine;
 var Surface = famous.core.Surface;

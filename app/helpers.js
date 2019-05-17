@@ -1,3 +1,4 @@
+// code referenced from 6.835 mini-project 3: battleship
 
 // SPEECH SYNTHESIS SETUP
 var voicesReady = false;
