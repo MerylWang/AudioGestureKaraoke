@@ -1,3 +1,7 @@
+
+// for 6.835 staff: Please retreve & insert your YOUTUBE API KEY here
+var YT_API_KEY = 'your_api_key';
+
 //////////////////////////
 // UI SETUP            //
 ///////////////////////
@@ -47,10 +51,7 @@ function onPlayerStateChange(event) {
 ///////////////////////////
 // QUEUE IMPLEMENTATION //
 /////////////////////////
-
 var SONG_IDS = ['Mm2kTNzo2aY', 'q2UVTPlKZtQ']; // initial queue
-var YT_API_KEY = 'AIzaSyCrO6uDzxgGOhTPFFz_9Lrq8JXp2NK86cE';
-
 function searchSong() {
    // input: user search query for song title (string)
    // output: add first result to QUEUE
@@ -114,6 +115,7 @@ function getvideoId(query) {
 
 function idToTitle(videoId) {
   // given videoId (string), gets video title (string)
+  // youtube data api: https://developers.google.com/youtube/v3/getting-started
   var title = $.ajax({
   url: "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + videoId + "&key=" + YT_API_KEY,
   async  : false
