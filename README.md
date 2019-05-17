@@ -13,6 +13,16 @@ A Leap Motion sensor needs to be connected to use the gesture features.
 
 
 ## List of files
-- ./index.html
-- main.js: I removed my Youtube API Key from the file. If you wish to use it, please create and retrived your own API KEY from Youtube following instructions at https://developers.google.com/youtube/v3/getting-started#before-you-start
+- ./index.html: the front-end code for the web-app
+- ./app/main.js: includes main code for all functionalities: 1) Youtube Widget 2) Queue Implementation 3) Gesture Recognition 4) Audio Commands
+
+**note** I removed my Youtube API Key from the file. If you wish to use it, please create and retrived your own API KEY from Youtube following instructions at https://developers.google.com/youtube/v3/getting-started#before-you-start
+
+
+The following files are referenced from 6.835 battleship miniproject: 
+- .app/config.js: contains configuration constants
+- .app/helpers.js: sets up speech synthesis
+- .app/setup.js: sets up speech debugger / displayer
+- .app/setupSpeech.js: sets up user speech processor
+
 
