@@ -31,3 +31,4 @@ The following files are referenced from 6.835 battleship miniproject:
 - .lib/*: imported libaries for speech recognition, jQuery, and Leap SDK. Files are named accordingly
 
 
+Contributors: Anthony Hernandez, Meryl Wang
